@@ -36,9 +36,11 @@ bower_components
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
+fullstack-react-with-typescript/goblin-store/build/
 
 # Dependency directories
 node_modules/
+fullstack-react-with-typescript/goblin-store/node_modules/
 jspm_packages/
 
 # TypeScript v1 declaration files
