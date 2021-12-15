@@ -1,19 +1,20 @@
-import React from "react"
-import { Home } from "./Home"
-import { Category } from "../shared/types"
-import { render } from "@testing-library/react"
-import { ProductCardProps } from "./ProductCard"
+import React from "react";
+import { Home } from "./Home";
+import { Category } from "../shared/types";
+import { render } from "@testing-library/react";
+import { ProductCardProps } from "./ProductCard";
 
 jest.mock("./ProductCard", () => ({
   ProductCard: ({ datum }: ProductCardProps) => {
-    const { name, price, image } = datum
+    const { name, price, image } = datum;
+
     return (
       <div>
         {name} {price} {image}
       </div>
-    )
-  }
-}))
+    );
+  },
+}));
 
 describe("Home", () => {
   describe("while loading", () => {
@@ -21,16 +22,14 @@ describe("Home", () => {
       const mockUseProducts = () => ({
         categories: [],
         isLoading: true,
-        error: false
-      })
+        error: false,
+      });
 
-      const { container } = render(
-        <Home useProductsHook={mockUseProducts} />
-      )
+      const { container } = render(<Home useProductsHook={mockUseProducts} />);
 
-      expect(container.innerHTML).toMatch("Loading")
-    })
-  })
+      expect(container.innerHTML).toMatch("Loading");
+    });
+  });
 
   describe("with data", () => {
     const category: Category = {
@@ -39,42 +38,34 @@ describe("Home", () => {
         {
           name: "Product foo",
           price: 55,
-          image: "/test.jpg"
-        }
-      ]
-    }
+          image: "/test.jpg",
+        },
+      ],
+    };
 
-    it("renders categories with products", () => {
+    it("renders products", () => {
       const mockUseProducts = () => ({
         categories: [category],
         isLoading: false,
-        error: false
-      })
+        error: false,
+      });
 
-      const { container } = render(
-        <Home useProductsHook={mockUseProducts} />
-      )
-
-      expect(container.innerHTML).toMatch("Category Foo")
-      expect(container.innerHTML).toMatch(
-        "Product foo 55 /test.jpg"
-      )
-    })
-  })
+      const { container } = render(<Home useProductsHook={mockUseProducts} />);
+      expect(container.innerHTML).toMatch("Category Foo");
+      expect(container.innerHTML).toMatch("Product foo 55 /test.jpg");
+    });
+  });
 
   describe("with error", () => {
-    it("renders error message", () => {
+    it("shows an error", () => {
       const mockUseProducts = () => ({
         categories: [],
         isLoading: false,
-        error: true
-      })
+        error: true,
+      });
 
-      const { container } = render(
-        <Home useProductsHook={mockUseProducts} />
-      )
-
-      expect(container.innerHTML).toMatch("Error")
-    })
-  })
-})
+      const { container } = render(<Home useProductsHook={mockUseProducts} />);
+      expect(container.innerHTML).toMatch("Error");
+    });
+  });
+});
