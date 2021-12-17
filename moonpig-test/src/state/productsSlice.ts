@@ -7,19 +7,6 @@ import {
 } from "@reduxjs/toolkit";
 import { getCards, getSingleCard } from "../api";
 
-const mapProduct = (product: ApiProduct): Product => {
-  return {
-    title: product.Title,
-    id: product.MoonpigProductNo,
-    price: product.Price.Value,
-    currencyCode: product.Price.CurrencyCode,
-    imageUrl: product.ProductImage.Link.Href,
-  };
-};
-
-const mapApiToState = (products: ApiProducts): Array<Product> =>
-  products.Products.map(mapProduct);
-
 export type Product = {
   title: string;
   price: number;
@@ -33,9 +20,24 @@ export type ProductState = {
   products: Product[];
 };
 
-const initialState: ProductState = {
-  products: [],
+const mapProduct = (product: ApiProduct): Product => {
+  return {
+    title: product.Title,
+    id: product.MoonpigProductNo,
+    price: product.Price.Value,
+    currencyCode: product.Price.CurrencyCode,
+    imageUrl: product.ProductImage.Link.Href,
+  };
 };
+
+const productsAdapter = createEntityAdapter<Product>();
+
+const mapApiToState = (products: ApiProducts): Array<Product> =>
+  products.Products.map(mapProduct);
+
+const initialState = productsAdapter.getInitialState({
+  status: "IDLE",
+});
 
 export const getProducts = createAsyncThunk(
   "products/getMany",
