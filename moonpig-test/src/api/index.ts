@@ -9,5 +9,5 @@ export const getCards = async (
     `https://search.moonpig.com/api/products?size=${size}&fq=card_shop_id:1&start=${start}`
   );
 
-export const getCard = async (id: string): Promise<ApiProduct> =>
+export const getSingleCard = async (id: string): Promise<ApiProduct> =>
   await axios.get(`https://www.moonpig.com/uk/api/product/product/?mpn=${id}`);
