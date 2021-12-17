@@ -54,6 +54,7 @@ export const getProducts = createAsyncThunk(
   }
 );
 
+// Move to a productPageSlice or currentProductSlice. Maybe create another one for search?
 const getSingleProduct = createAsyncThunk(
   "products/getOne",
   async ({ id }: { id: string }, { rejectWithValue }) => {
@@ -71,7 +72,20 @@ const productsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getProducts.fulfilled, (state, action) => {});
+    builder.addCase(getProducts.fulfilled, (state, action) => {
+      if (action.payload) {
+        productsAdapter.upsertMany(state, mapApiToState(action.payload));
+        state.status = "IDLE";
+      }
+    });
+
+    builder.addCase(getProducts.pending, (state, _) => {
+      state.status = "LOADING";
+    });
+
+    builder.addCase(getProducts.rejected, (state, _) => {
+      state.status = "ERROR";
+    });
   },
 });
 

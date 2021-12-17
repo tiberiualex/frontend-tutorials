@@ -30,4 +30,4 @@ export type ApiProducts = {
   Products: ApiProduct[];
 };
 
-export type Status = "LOADING" | "ERROR";
+export type Status = "LOADING" | "ERROR" | "IDLE";
