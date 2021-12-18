@@ -1,34 +1,13 @@
-import { Status, CurrencyCode, ApiProduct, ApiProducts } from "../types/index";
+import { Status, Product, ApiProducts } from "../types/index";
 import {
   createSlice,
   createAsyncThunk,
   createEntityAdapter,
   Reducer,
 } from "@reduxjs/toolkit";
-import { getCards, getSingleCard } from "../api";
-
-export type Product = {
-  title: string;
-  price: number;
-  currencyCode: CurrencyCode;
-  imageUrl: string;
-  id: string;
-};
-
-export type ProductState = {
-  status?: Status;
-  products: Product[];
-};
-
-const mapProduct = (product: ApiProduct): Product => {
-  return {
-    title: product.Title,
-    id: product.MoonpigProductNo,
-    price: product.Price.Value,
-    currencyCode: product.Price.CurrencyCode,
-    imageUrl: product.ProductImage.Link.Href,
-  };
-};
+import { getCards } from "../api";
+import { RootState } from "./store";
+import { mapProduct } from "./utils";
 
 const productsAdapter = createEntityAdapter<Product>();
 
@@ -36,7 +15,7 @@ const mapApiToState = (products: ApiProducts): Array<Product> =>
   products.Products.map(mapProduct);
 
 const initialState = productsAdapter.getInitialState({
-  status: "IDLE",
+  status: "IDLE" as Status,
 });
 
 export const getProducts = createAsyncThunk(
@@ -55,17 +34,6 @@ export const getProducts = createAsyncThunk(
 );
 
 // Move to a productPageSlice or currentProductSlice. Maybe create another one for search?
-const getSingleProduct = createAsyncThunk(
-  "products/getOne",
-  async ({ id }: { id: string }, { rejectWithValue }) => {
-    try {
-      const result = await getSingleCard(id);
-      return result;
-    } catch (err) {
-      rejectWithValue(err);
-    }
-  }
-);
 
 const productsSlice = createSlice({
   name: "products",
@@ -90,3 +58,11 @@ const productsSlice = createSlice({
 });
 
 export default productsSlice.reducer as Reducer<typeof initialState>;
+
+export const {
+  selectById: selectProductById,
+  selectIds: selectProductIds,
+  selectEntities: selectProductEntities,
+  selectAll: selectAllProducts,
+  selectTotal: selectTotalNotes,
+} = productsAdapter.getSelectors((state: RootState) => state.products);

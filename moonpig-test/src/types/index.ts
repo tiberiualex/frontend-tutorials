@@ -31,3 +31,11 @@ export type ApiProducts = {
 };
 
 export type Status = "LOADING" | "ERROR" | "IDLE";
+
+export type Product = {
+  title: string;
+  price: number;
+  currencyCode: CurrencyCode;
+  imageUrl: string;
+  id: string;
+};
