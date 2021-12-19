@@ -1,15 +1,17 @@
 import { createSlice, createAsyncThunk, Reducer } from "@reduxjs/toolkit";
-import { getSingleCard } from "../api";
-import { Status, Product } from "../types/index";
-import { mapProduct } from "./utils";
+import { getSingleCard } from "../../api";
+import { Status, Product } from "../../types/index";
+import { mapProduct } from "../utils";
 
 type SingleProductState = {
   product?: Product;
   status: Status;
+  errorMessage: string;
 };
 
 const initialState: SingleProductState = {
   status: "IDLE",
+  errorMessage: "",
 };
 
 const getSingleProduct = createAsyncThunk(

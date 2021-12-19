@@ -1,13 +1,13 @@
-import { Status, Product, ApiProducts } from "../types/index";
+import { Status, Product, ApiProducts } from "../../types/index";
 import {
   createSlice,
   createAsyncThunk,
   createEntityAdapter,
   Reducer,
 } from "@reduxjs/toolkit";
-import { getCards } from "../api";
-import { RootState } from "./store";
-import { mapProduct } from "./utils";
+import { getCards } from "../../api";
+import { RootState } from "../store";
+import { mapProduct } from "../utils";
 
 const productsAdapter = createEntityAdapter<Product>();
 
@@ -16,6 +16,7 @@ const mapApiToState = (products: ApiProducts): Array<Product> =>
 
 const initialState = productsAdapter.getInitialState({
   status: "IDLE" as Status,
+  errorMessage: "",
 });
 
 export const getProducts = createAsyncThunk(
@@ -32,8 +33,6 @@ export const getProducts = createAsyncThunk(
     }
   }
 );
-
-// Move to a productPageSlice or currentProductSlice. Maybe create another one for search?
 
 const productsSlice = createSlice({
   name: "products",
