@@ -1,6 +1,4 @@
-import configureStore from "redux-mock-store";
-import thunk from "redux-thunk";
-import productsReducer, {
+import {
   initialState,
   productsAdapter,
   getProducts,
@@ -8,23 +6,43 @@ import productsReducer, {
 import mockApiProducts from "./../fixtures/apiProducts";
 import { RootState, getStoreWithState } from "../../state/store";
 import { Product } from "../../types";
-import { debug } from "console";
+import { getCards } from "./../../api";
 
-jest.mock("./../../api", () => {
-  return {
-    async getCards() {
-      return mockApiProducts;
-    },
-  };
-});
+jest.mock("./../../api");
+const mockGetCards = getCards as jest.Mock;
 
-describe("thunks", () => {
-  it("correctly populate state", async () => {
+describe("productsSlice state", () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it("correctly populates state", async () => {
+    mockGetCards.mockReturnValue(mockApiProducts);
+
     const state = getStateWithProducts([]);
     const store = getStoreWithState(state);
     await store.dispatch(getProducts({}));
-    console.log(store.getState().products);
+
     expect(store.getState().products.ids.length).toEqual(2);
+  });
+
+  it("populates error message", async () => {
+    mockGetCards.mockReturnValue(Promise.reject("Error message"));
+
+    const state = getStateWithProducts([]);
+    const store = getStoreWithState(state);
+    await store.dispatch(getProducts({}));
+    expect(store.getState().products.status).toEqual("ERROR");
+    expect(store.getState().products.errorMessage).toEqual("Error message");
+  });
+
+  it("sets state to LOADING", () => {
+    mockGetCards.mockReturnValue(mockApiProducts);
+
+    const state = getStateWithProducts([]);
+    const store = getStoreWithState(state);
+    store.dispatch(getProducts({}));
+    expect(store.getState().products.status).toEqual("LOADING");
   });
 });
 

@@ -52,6 +52,7 @@ const productsSlice = createSlice({
 
     builder.addCase(getProducts.rejected, (state, _) => {
       state.status = "ERROR";
+      state.errorMessage = _.error.message as string;
     });
   },
 });
