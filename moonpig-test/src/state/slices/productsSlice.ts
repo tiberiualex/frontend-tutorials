@@ -9,12 +9,12 @@ import { getCards } from "../../api";
 import { RootState } from "../store";
 import { mapProduct } from "../utils";
 
-const productsAdapter = createEntityAdapter<Product>();
+export const productsAdapter = createEntityAdapter<Product>();
 
 const mapApiToState = (products: ApiProducts): Array<Product> =>
   products.Products.map(mapProduct);
 
-const initialState = productsAdapter.getInitialState({
+export const initialState = productsAdapter.getInitialState({
   status: "IDLE" as Status,
   errorMessage: "",
 });
