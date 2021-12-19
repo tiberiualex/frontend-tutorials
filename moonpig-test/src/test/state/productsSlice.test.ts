@@ -5,24 +5,26 @@ import productsReducer, {
   productsAdapter,
   getProducts,
 } from "./../../state/slices/productsSlice";
-import apiProducts from "./../fixtures/apiProducts.json";
+import mockApiProducts from "./../fixtures/apiProducts";
 import { RootState, getStoreWithState } from "../../state/store";
 import { Product } from "../../types";
+import { debug } from "console";
 
 jest.mock("./../../api", () => {
   return {
     async getCards() {
-      return apiProducts;
+      return mockApiProducts;
     },
   };
 });
 
-describe("yolo", () => {
-  it("should do stuff", async () => {
+describe("thunks", () => {
+  it("correctly populate state", async () => {
     const state = getStateWithProducts([]);
     const store = getStoreWithState(state);
     await store.dispatch(getProducts({}));
-    expect(store.getState().products).toEqual(5);
+    console.log(store.getState().products);
+    expect(store.getState().products.ids.length).toEqual(2);
   });
 });
 
