@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, Reducer } from "@reduxjs/toolkit";
 import { getSingleCard } from "../../api";
 import { Status, Product } from "../../types/index";
-import { mapProduct } from "../utils";
+import { mapSingleProduct } from "../utils";
 
 type SingleProductState = {
   product?: Product;
@@ -14,7 +14,7 @@ const initialState: SingleProductState = {
   errorMessage: "",
 };
 
-const getSingleProduct = createAsyncThunk(
+export const getSingleProduct = createAsyncThunk(
   "products/getOne",
   async ({ id }: { id: string }, thunkApi) => {
     try {
@@ -33,7 +33,7 @@ const currentProductSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(getSingleProduct.fulfilled, (state, action) => {
       if (action.payload) {
-        state.product = mapProduct(action.payload);
+        state.product = mapSingleProduct(action.payload);
         state.status = "IDLE";
       }
     });

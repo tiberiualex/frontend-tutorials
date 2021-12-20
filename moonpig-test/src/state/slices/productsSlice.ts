@@ -1,4 +1,4 @@
-import { Status, Product, ApiProducts } from "../../types/index";
+import { Status, Product, ApiBatchProducts } from "../../types/index";
 import {
   createSlice,
   createAsyncThunk,
@@ -7,12 +7,12 @@ import {
 } from "@reduxjs/toolkit";
 import { getCards } from "../../api";
 import { RootState } from "../store";
-import { mapProduct } from "../utils";
+import { mapBatchProduct } from "../utils";
 
 export const productsAdapter = createEntityAdapter<Product>();
 
-const mapApiToState = (products: ApiProducts): Array<Product> =>
-  products.Products.map(mapProduct);
+const mapApiToState = (products: ApiBatchProducts): Array<Product> =>
+  products.Products.map(mapBatchProduct);
 
 export const initialState = productsAdapter.getInitialState({
   status: "IDLE" as Status,

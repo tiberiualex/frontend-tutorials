@@ -14,28 +14,73 @@ export type Link = {
   Title: string;
 };
 
-export type ProductImage = {
+export type ApiProductImage = {
   Link: Link;
   MimeType: "image/jpeg";
 };
 
-export type ApiProduct = {
+export type ApiBatchProductVariant = {
+  Id: number;
+  Price: number;
+  // Images: ApiProductImage;
+  Name: string;
+};
+
+export type ApiBatchProduct = {
   Price: Price;
   Title: string;
   MoonpigProductNo: string;
-  ProductImage: ProductImage;
+  ProductImage: ApiProductImage;
+  DefaultSizeId: number;
+  ProductVariants: ApiBatchProductVariant[];
 };
 
-export type ApiProducts = {
-  Products: ApiProduct[];
+export type ApiBatchProducts = {
+  Products: ApiBatchProduct[];
+};
+
+export type SingleProductSize = {
+  Name: string;
+  Id: number;
+  Price: number;
+  Currency: Currency;
+};
+
+export type ApiImageUrl = {
+  ImageNo: number;
+  ImageUrl: string;
+};
+
+export type ApiSingleProduct = {
+  MoonpigProductNo: string;
+  Description: string;
+  Size: SingleProductSize;
+  AvailableSizes: SingleProductSize[];
+  ThumbnailUrl: string;
+  ImageUrls: ApiImageUrl[];
+};
+
+export type Image = {
+  imageNo: number;
+  imageUrl: string;
 };
 
 export type Status = "LOADING" | "ERROR" | "IDLE";
 
+export type ProductSize = {
+  id: number;
+  price: number;
+  name: string;
+  currency: Currency;
+};
+
 export type Product = {
   title: string;
   price: number;
-  currencyCode: CurrencyCode;
+  currency: Currency;
   imageUrl: string;
   id: string;
+  defaultSizeId: number;
+  sizes: ProductSize[];
+  images: Image[];
 };
