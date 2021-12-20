@@ -3,10 +3,10 @@
 exports[`App matches snapshot 1`] = `
 <div>
   <div
-    class="App"
+    class="sc-bdvvtL fwpLXR App"
   >
     <h1>
-      App
+      Moonpig
     </h1>
   </div>
 </div>
