@@ -16,12 +16,12 @@ const initialState: SingleProductState = {
 
 export const getSingleProduct = createAsyncThunk(
   "products/getOne",
-  async ({ id }: { id: string }, thunkApi) => {
+  async ({ id }: { id: string }, { rejectWithValue }) => {
     try {
       const result = await getSingleCard(id);
       return result;
     } catch (err) {
-      thunkApi.rejectWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );
@@ -42,8 +42,9 @@ const currentProductSlice = createSlice({
       state.status = "LOADING";
     });
 
-    builder.addCase(getSingleProduct.rejected, (state, _) => {
+    builder.addCase(getSingleProduct.rejected, (state, action) => {
       state.status = "ERROR";
+      state.errorMessage = (action.payload as string) || "";
     });
   },
 });

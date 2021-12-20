@@ -26,10 +26,10 @@ export const getProducts = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const result = getCards(size, start);
+      const result = await getCards(size, start);
       return result;
     } catch (err) {
-      rejectWithValue(err);
+      return rejectWithValue(err);
     }
   }
 );
@@ -50,9 +50,9 @@ const productsSlice = createSlice({
       state.status = "LOADING";
     });
 
-    builder.addCase(getProducts.rejected, (state, _) => {
+    builder.addCase(getProducts.rejected, (state, action) => {
       state.status = "ERROR";
-      state.errorMessage = _.error.message as string;
+      state.errorMessage = (action.payload as string) || "";
     });
   },
 });
