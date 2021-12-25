@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import React from "react";
 import { render, RenderResult } from "@testing-library/react";
 import { RootState, getStoreWithState } from "../state/store";
-import { createMemoryHistory, MemoryHistory } from "history";
+import { createMemoryHistory } from "history";
 import { initialState as productsInitialState } from "./../state/slices/productsSlice";
 
 export const renderWithRouterAndContext = (
